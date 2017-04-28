@@ -69,9 +69,6 @@ int getDivXVersion(AVCodecContext *avctx);
 
 status_t parseMetadataTags(AVFormatContext *ctx, const sp<MetaData> &meta);
 
-AudioEncoding sampleFormatToEncoding(AVSampleFormat fmt);
-AVSampleFormat encodingToSampleFormat(AudioEncoding encoding);
-
 }  // namespace android
 
 #endif  // CODEC_UTILS_H_

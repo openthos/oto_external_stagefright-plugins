@@ -6,8 +6,6 @@ LOCAL_SRC_FILES := \
 	FFmpegExtractor.cpp
 
 LOCAL_SHARED_LIBRARIES += \
-	libbinder         \
-	libmedia          \
 	libffmpeg_utils   \
 
 LOCAL_MODULE:= libffmpeg_extractor
