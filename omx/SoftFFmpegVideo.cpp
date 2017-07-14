@@ -23,6 +23,7 @@
 #include "FFmpegComponents.h"
 #include "ffmpeg_hwaccel.h"
 
+#include <OMX_VideoExt.h>
 #include <media/stagefright/foundation/ADebug.h>
 #include <media/stagefright/foundation/AUtils.h>
 #include <media/stagefright/foundation/hexdump.h>
@@ -39,6 +40,74 @@ namespace android {
 static const CodecProfileLevel kM4VProfileLevels[] = {
     { OMX_VIDEO_MPEG4ProfileSimple, OMX_VIDEO_MPEG4Level5 },
     { OMX_VIDEO_MPEG4ProfileAdvancedSimple, OMX_VIDEO_MPEG4Level5 },
+};
+
+static const CodecProfileLevel kAVCProfileLevels[] = {
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel1  },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel1b },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel11 },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel12 },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel13 },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel2  },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel21 },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel22 },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel3  },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel31 },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel32 },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel4  },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel41 },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel42 },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel5  },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel51 },
+    { OMX_VIDEO_AVCProfileBaseline, OMX_VIDEO_AVCLevel52 },
+
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel1  },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel1b },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel11 },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel12 },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel13 },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel2  },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel21 },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel22 },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel3  },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel31 },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel32 },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel4  },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel41 },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel42 },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel5  },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel51 },
+    { OMX_VIDEO_AVCProfileMain,     OMX_VIDEO_AVCLevel52 },
+
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel1  },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel1b },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel11 },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel12 },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel13 },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel2  },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel21 },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel22 },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel3  },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel31 },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel32 },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel4  },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel41 },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel42 },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel5  },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel51 },
+    { OMX_VIDEO_AVCProfileHigh,     OMX_VIDEO_AVCLevel52 },
+};
+
+static const CodecProfileLevel kHEVCProfileLevels[] = {
+    { OMX_VIDEO_HEVCProfileMain, OMX_VIDEO_HEVCMainTierLevel1  },
+    { OMX_VIDEO_HEVCProfileMain, OMX_VIDEO_HEVCMainTierLevel2  },
+    { OMX_VIDEO_HEVCProfileMain, OMX_VIDEO_HEVCMainTierLevel21 },
+    { OMX_VIDEO_HEVCProfileMain, OMX_VIDEO_HEVCMainTierLevel3  },
+    { OMX_VIDEO_HEVCProfileMain, OMX_VIDEO_HEVCMainTierLevel31 },
+    { OMX_VIDEO_HEVCProfileMain, OMX_VIDEO_HEVCMainTierLevel4  },
+    { OMX_VIDEO_HEVCProfileMain, OMX_VIDEO_HEVCMainTierLevel41 },
+    { OMX_VIDEO_HEVCProfileMain, OMX_VIDEO_HEVCMainTierLevel5  },
+    { OMX_VIDEO_HEVCProfileMain, OMX_VIDEO_HEVCMainTierLevel51 },
 };
 
 SoftFFmpegVideo::SoftFFmpegVideo(
@@ -786,14 +855,24 @@ SoftOMXComponent* SoftFFmpegVideo::createSoftOMXComponent(
         TRESPASS();
     }
 
+    const CodecProfileLevel *codec_profile_levels;
+    size_t codec_array_size;
     if (!strcmp(name, "OMX.ffmpeg.mpeg4.decoder")) {
-        return new SoftFFmpegVideo(name, componentRole, codingType,
-                kM4VProfileLevels, ARRAY_SIZE(kM4VProfileLevels),
-                callbacks, appData, component, codecID);
+        codec_profile_levels = kM4VProfileLevels;
+        codec_array_size = ARRAY_SIZE(kM4VProfileLevels);
+    } else if (!strcmp(name, "OMX.intel.hw_vd.h264")) {
+        codec_profile_levels = kAVCProfileLevels;
+        codec_array_size = ARRAY_SIZE(kAVCProfileLevels);
+    } else if (!strcmp(name, "OMX.intel.hw_vd.h265")) {
+        codec_profile_levels = kHEVCProfileLevels;
+        codec_array_size = ARRAY_SIZE(kHEVCProfileLevels);
+    } else {
+        codec_profile_levels = NULL;
+        codec_array_size = 0;
     }
 
     return new SoftFFmpegVideo(name, componentRole, codingType,
-                NULL, 0,
+                codec_profile_levels, codec_array_size,
                 callbacks, appData, component, codecID);
 }
 

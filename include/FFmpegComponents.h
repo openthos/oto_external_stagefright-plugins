@@ -67,16 +67,16 @@ static const struct VideoCodingMapEntry {
     const char *mRole;
     enum AVCodecID mCodecID;
 } kVideoComponents[] = {
+    { "OMX.intel.hw_vd.h264",
+        OMX_VIDEO_CodingAVC, "video_decoder.avc", AV_CODEC_ID_H264 },
+    { "OMX.intel.hw_vd.h265",
+        OMX_VIDEO_CodingHEVC, "video_decoder.hevc", AV_CODEC_ID_HEVC },
     { "OMX.ffmpeg.divx.decoder",
         (OMX_VIDEO_CODINGTYPE)OMX_VIDEO_CodingDIVX, "video_decoder.divx", AV_CODEC_ID_MPEG4 },
     { "OMX.ffmpeg.flv1.decoder",
         (OMX_VIDEO_CODINGTYPE)OMX_VIDEO_CodingFLV1, "video_decoder.flv1", AV_CODEC_ID_FLV1 },
-    { "OMX.ffmpeg.h264.decoder",
-        OMX_VIDEO_CodingAVC, "video_decoder.avc", AV_CODEC_ID_H264 },
     { "OMX.ffmpeg.h263.decoder",
         OMX_VIDEO_CodingH263, "video_decoder.h263", AV_CODEC_ID_H263 },
-    { "OMX.ffmpeg.hevc.decoder",
-        OMX_VIDEO_CodingHEVC, "video_decoder.hevc", AV_CODEC_ID_HEVC },
     { "OMX.ffmpeg.mpeg2.decoder",
         OMX_VIDEO_CodingMPEG2, "video_decoder.mpeg2", AV_CODEC_ID_MPEG2VIDEO },
     { "OMX.ffmpeg.mpeg4.decoder",

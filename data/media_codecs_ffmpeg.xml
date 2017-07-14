@@ -69,7 +69,25 @@
             <Limit name="sample-rate" ranges="8000-192000" />
         </MediaCodec>
 
-        <!--  ffmpeg video codecs -->
+        <!--  ffmpeg hw video codecs -->
+        <MediaCodec name="OMX.intel.hw_vd.h264" type="video/avc" >
+            <!-- profiles and levels:  ProfileBaseline : Level51 -->
+            <Limit name="size" min="64x64" max="3840x2160" />
+            <Limit name="alignment" value="2x2" />
+            <Limit name="block-size" value="16x16" />
+            <Limit name="blocks-per-second" range="1-972000" />
+            <Limit name="bitrate" range="1-40000000" />
+            <Feature name="adaptive-playback" />
+        </MediaCodec>
+        <MediaCodec name="OMX.intel.hw_vd.h265" type="video/hevc" >
+            <Limit name="size" min="64x64" max="3840x2160" />
+            <Limit name="alignment" value="2x2" />
+            <Limit name="block-size" value="16x16" />
+            <Limit name="blocks-per-second" range="1-972000" />
+            <Limit name="bitrate" range="1-40000000" />
+            <Feature name="adaptive-playback" />
+        </MediaCodec>
+        <!--  ffmpeg sw video codecs -->
         <MediaCodec name="OMX.ffmpeg.divx.decoder"   type="video/divx">
             <Limit name="size" min="2x2" max="2048x2048" />
             <Limit name="alignment" value="2x2" />
@@ -91,16 +109,6 @@
             <Feature name="adaptive-playback" />
         </MediaCodec>
         <MediaCodec name="OMX.ffmpeg.h263.decoder"   type="video/3gpp">
-            <Limit name="size" min="2x2" max="2048x2048" />
-            <Limit name="alignment" value="2x2" />
-            <Feature name="adaptive-playback" />
-        </MediaCodec>
-        <MediaCodec name="OMX.ffmpeg.h264.decoder"   type="video/avc">
-            <Limit name="size" min="2x2" max="2048x2048" />
-            <Limit name="alignment" value="2x2" />
-            <Feature name="adaptive-playback" />
-        </MediaCodec>
-        <MediaCodec name="OMX.ffmpeg.hevc.decoder"   type="video/hevc">
             <Limit name="size" min="2x2" max="2048x2048" />
             <Limit name="alignment" value="2x2" />
             <Feature name="adaptive-playback" />
