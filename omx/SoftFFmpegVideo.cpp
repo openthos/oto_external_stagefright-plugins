@@ -160,7 +160,7 @@ void SoftFFmpegVideo::setDefaultCtx(AVCodecContext *avctx, const AVCodec *codec)
     avctx->idct_algo         = 0;
     avctx->skip_frame        = AVDISCARD_DEFAULT;
     avctx->skip_idct         = AVDISCARD_DEFAULT;
-    avctx->skip_loop_filter  = AVDISCARD_ALL;
+    avctx->skip_loop_filter  = AVDISCARD_DEFAULT;
     avctx->error_concealment = 3;
 
     if (fast)   avctx->flags2 |= AV_CODEC_FLAG2_FAST;
@@ -623,7 +623,7 @@ int32_t SoftFFmpegVideo::drainOneOutputBuffer() {
         return ERR_SWS_FAILED;
     }
     sws_scale(mImgConvertCtx, mFrame->data, mFrame->linesize,
-            0, height, data, linesize);
+            0, mFrame->height, data, linesize);
 
     outHeader->nOffset = 0;
     outHeader->nFilledLen = (outputBufferWidth() * outputBufferHeight() * 3) / 2;
